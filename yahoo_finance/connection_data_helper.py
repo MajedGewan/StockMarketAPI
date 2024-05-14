@@ -27,8 +27,9 @@ def get_raw_data(url, symbol, interval, period):
             return None, error
         return raw_data, error
 
-def get_data(url, symbol, interval, period):
+def get_data(url, symbol, period):
      chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
+     interval = get_interval(period)
      data, error = get_raw_data(url, symbol, interval, period)
      if error is None:
           chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(data, interval)
@@ -66,4 +67,9 @@ def get_high_low_close(meta, numerical_data, interval):
     return high, low, previous_close
 
 
-     
+def get_interval(period):
+    if period == '1d':
+        interval= '1m'
+    else:
+        interval= '1d'
+    return interval

@@ -1,7 +1,6 @@
 from . import connection_data_helper
 class Ticker:
     def __init__(self, symbol, period ) -> None:
-        self.url = "https://query1.finance.yahoo.com/v8/finance/chart/"
         self.symbol = symbol
         self.period = period
         self.error = None
@@ -9,7 +8,7 @@ class Ticker:
         self.get_data()
 
     def get_data(self):
-        error, chart_data, currency, regular_market_time, timezone, previous_close, high, low = connection_data_helper.get_data(self.url, self.symbol, self.period)
+        error, chart_data, currency, regular_market_time, timezone, previous_close, high, low = connection_data_helper.get_data(self.symbol, self.period)
         self.error = error
         self.data = chart_data
         self.currency = currency
