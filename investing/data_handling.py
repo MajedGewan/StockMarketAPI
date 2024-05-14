@@ -4,5 +4,5 @@ def search_keyword(keyword):
     return connection_data_helper.search_keyword(keyword)
     
 def get_data(id, url, date_type='1D'):
-    finance = InvestingTicker(id, period=date_type, url=url)
+    finance = InvestingTicker(id, None, date_type, url)
     return finance.to_json()

@@ -9,6 +9,7 @@ app.run()
 @app.route('/getdata/<int:id>')
 def getdata(id):
     website = None
+    content = request.json
     if not 'url' in content:
         return Response(
         "url is not found",
@@ -24,7 +25,6 @@ def getdata(id):
     if 'symbol' in content:
         symbol = content['symbol']
          
-    content = request.json
     date_type = content['date_type']
     
     url = content['url']

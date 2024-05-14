@@ -8,7 +8,7 @@ class Ticker:
             self.get_data()
 
     def get_data(self):
-        error, chart_data, currency, regular_market_time, timezone, previous_close, high, low =  get_connection_data()
+        error, chart_data, currency, regular_market_time, timezone, previous_close, high, low =  self.get_connection_data()
         self.error = error
         self.data = chart_data
         self.currency = currency
@@ -36,3 +36,4 @@ class Ticker:
                                             'High': self.high,
                                             'Low': self.low}}
         return json.dumps(returned_json)
+    

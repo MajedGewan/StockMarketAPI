@@ -4,7 +4,7 @@ class InvestingTicker(Ticker):
     def __init__(self, id, symbol, period, url ) -> None:
         self.url = url
         self.id = id
-        Ticker.__init__(self, symbol, period)
+        super().__init__(symbol, period)
 
     def get_connection_data(self):
         return connection_data_helper.get_data(self.id, self.period, self.url)
