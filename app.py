@@ -1,9 +1,9 @@
 from flask import Flask, request, Response
-from investing import data_handling
+from investing import data_handling as inv_data_handling
 app = Flask(__name__)
 @app.route('/search/<key>')
 def index(key):
-    return data_handling.search_keyword(key)
+    return inv_data_handling.search_keyword(key)
 app.run()
 
 @app.route('/getdata/<int:id>')
@@ -21,7 +21,8 @@ def getdata(id):
             "When choosing another website, symbol should be added",
             status=400,
             )
-    symbol = content['symbol']
+    if 'symbol' in content:
+        symbol = content['symbol']
          
     content = request.json
     date_type = content['date_type']
@@ -29,11 +30,11 @@ def getdata(id):
     url = content['url']
     if website and website != 'Investing':
         if website == 'Yahoo Finance':
-            return 'Yahoo Finanace'
+            return 
         elif website == 'Nasdaq':
             return "Nasdaq"
         else:
-            return data_handling.get_data(id, url, date_type)
-    return data_handling.get_data(id, url, date_type)
+            return inv_data_handling.get_data(id, url, date_type)
+    return inv_data_handling.get_data(id, url, date_type)
 app.run()
 

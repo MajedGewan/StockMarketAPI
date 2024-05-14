@@ -1,4 +1,4 @@
-from .Ticker import Ticker
+from .Ticker import YahooTicker
 def get_data(dataset_input, date_type):
     if date_type == '1D':
         period = '1d'
@@ -10,6 +10,6 @@ def get_data(dataset_input, date_type):
         period = '5y'
     else:
         raise Exception
-    finance = Ticker(dataset_input, period=period)
+    finance = YahooTicker(dataset_input, period=period)
     
     return finance 
