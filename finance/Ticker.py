@@ -1,10 +1,12 @@
 import json
 class Ticker:
+    
     def __init__(self, symbol, period ) -> None:
             self.symbol = symbol
             self.period = period
             self.error = None
             self.raw_data = None
+            self.website = self.get_website()
             self.get_data()
 
     def get_data(self):
@@ -20,11 +22,14 @@ class Ticker:
 
     def get_connection_data(self):
         pass
+
+    def get_website(self):
+        pass
         
 
         
     def __str__(self) -> str:
-        return f'Data: {self.data} \nCurrency: {self.currency}\nRegularMarketTime: {self.regular_market_time}\nTimezone: {self.timezone}\nPreviousClose: {self.previous_close}\nhigh: {self.high}\nlow: {self.low}\n'
+        return f'Error: {self.error}\nData: {self.data} \nCurrency: {self.currency}\nRegularMarketTime: {self.regular_market_time}\nTimezone: {self.timezone}\nPreviousClose: {self.previous_close}\nhigh: {self.high}\nlow: {self.low}\n'
 
     def to_json(self):
         
@@ -34,6 +39,7 @@ class Ticker:
                                             'Timezone': self.timezone,
                                             'PreviousClose': self.previous_close,
                                             'High': self.high,
-                                            'Low': self.low}}
+                                            'Low': self.low,
+                                            'Website':self.website}}
         return json.dumps(returned_json)
     

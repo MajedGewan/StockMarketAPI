@@ -5,4 +5,5 @@ def search_keyword(keyword):
     
 def get_data(id, url, date_type='1D'):
     finance = InvestingTicker(id, None, date_type, url)
-    return finance.to_json()
+    return finance
+    

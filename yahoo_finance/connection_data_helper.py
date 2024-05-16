@@ -1,7 +1,8 @@
 import requests
 import time
 import pandas as pd
-def get_raw_data(url, symbol, interval, period):
+url = "https://query1.finance.yahoo.com/v8/finance/chart/"
+def get_raw_data(symbol, interval, period):
         link = url + symbol
         params = {
         'interval': interval,
@@ -12,10 +13,13 @@ def get_raw_data(url, symbol, interval, period):
         'From': 'majed.alhanash@gewan.ai' 
         }
         raw_data, error = None, None
-        for attempt in range(5):  # Retry up to 5 times
+        for attempt in range(3):  # Retry up to 5 times
             response = requests.get(link, params=params, headers=headers)
             if response.status_code == 200:
                 raw_data = response.json()
+                if 'timestamp' not in raw_data['chart']['result']:
+                    return raw_data, 404
+                    
                 return raw_data, None 
             elif response.status_code == 429:
                 time.sleep(2 ** attempt)  # Exponential back-off
@@ -27,10 +31,12 @@ def get_raw_data(url, symbol, interval, period):
             return None, error
         return raw_data, error
 
-def get_data(url, symbol, period):
+def get_data(symbol, period):
      chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
      interval = get_interval(period)
-     data, error = get_raw_data(url, symbol, interval, period)
+     print(period)
+     print(interval)
+     data, error = get_raw_data(symbol, interval, period)
      if error is None:
           chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(data, interval)
      return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low

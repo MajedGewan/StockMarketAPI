@@ -13,15 +13,18 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
                         'From': 'youremail@domain.example'  # This is another valid field
                     }
-        response = requests.get(link, headers=headers)
         raw_data, error = None, None
-        for attempt in range(5):  # Retry up to 5 times
+        for attempt in range(3):  # Retry up to 5 times
             response = requests.get(link, headers=headers)
-            if response.status_code == 200:
+            if response.status_code == 429:
+                time.sleep(2 ** attempt)
+                continue
+            elif response.status_code == 200:
+                if response.json()['status']['rCode'] !=200:
+                    break
                 raw_data = response.json()
+                print(raw_data)
                 return raw_data, None 
-            elif response.status_code == 429:
-                time.sleep(2 ** attempt)  # Exponential back-off
             else:
                 error = response.status_code
                 return None, error
@@ -32,6 +35,7 @@ def get_raw_data(symbol, from_date=None, to_date=None):
 
 
 def get_data(symbol, period):
+    chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
     from_date, to_date = get_from_to_date(period)
     raw_data, error = get_raw_data(symbol, from_date, to_date)
     if error is None:
@@ -77,8 +81,7 @@ def process_long_data(data):
     return chart_data, currency, None, timezone, previous_close, high, low
 
 def process_daily_data(data):
-
-    day = data['data']['timeAsOf'][:11]
+    day = data['data']['timeAsOf'][:12].strip()
     day = datetime.strptime(day, '%b %d, %Y')
     previous_close = data['data']['previousClose']
     timezone = 'ET'

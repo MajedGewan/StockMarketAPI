@@ -12,4 +12,4 @@ def get_data(dataset_input, date_type):
         raise Exception
     finance = YahooTicker(dataset_input, period=period)
     
-    return finance 
+    return finance

@@ -9,4 +9,5 @@ class InvestingTicker(Ticker):
     def get_connection_data(self):
         return connection_data_helper.get_data(self.id, self.period, self.url)
 
-   
+    def get_website(self):
+        return 'Investing'
