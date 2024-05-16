@@ -1,3 +1,6 @@
 __pycache__/
 venv/
 test.py
+.vscode/
+test2.py
+testing.py
