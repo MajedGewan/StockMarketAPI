@@ -16,15 +16,20 @@ def get_raw_data(symbol, interval, period):
         for attempt in range(3):  # Retry up to 5 times
             response = requests.get(link, params=params, headers=headers)
             if response.status_code == 200:
+                print('4 - If works well')
                 raw_data = response.json()
                 if 'timestamp' not in raw_data['chart']['result']:
                     return raw_data, 404
                     
                 return raw_data, None 
             elif response.status_code == 429:
+                print('4 - If didnot works well 429')
+                print('Error: ', response.reason)
                 time.sleep(2 ** attempt)  # Exponential back-off
             else:
                 error = response.status_code
+                print('4 - If didnot works well')
+                print('Error: ', response.reason)
                 return None, error
         if raw_data is None:
             error = "429 unknow request code"
@@ -32,13 +37,15 @@ def get_raw_data(symbol, interval, period):
         return raw_data, error
 
 def get_data(symbol, period):
+     print('2 - Inside before fetching')
      chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
      interval = get_interval(period)
-     print(period)
-     print(interval)
+     print('3 - Inside before get data')
      data, error = get_raw_data(symbol, interval, period)
+     print('5 - After raw data')
      if error is None:
           chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(data, interval)
+          print('6 - After process data')
      return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low
 def process_data(data,interval):
      result = data['chart']['result'][0]
