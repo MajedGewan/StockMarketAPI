@@ -17,10 +17,12 @@ def get_raw_data(symbol, from_date=None, to_date=None):
         for attempt in range(3):  # Retry up to 5 times
             print('1 - before responsesss')
             try:
+                print('1 - before responsesss inside try')
+                print('link')
                 response = requests.get(link, headers=headers)
+                print('after try')
             except Exception as e:
                 print('Exception')
-                print(e)
                 return None, '500'
             print('2 - after response')
             if response.status_code == 429:
