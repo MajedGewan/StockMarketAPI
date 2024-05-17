@@ -16,7 +16,10 @@ def get_raw_data(symbol, from_date=None, to_date=None):
         raw_data, error = None, None
         for attempt in range(3):  # Retry up to 5 times
             print('1 - before response')
-            response = requests.get(link, headers=headers)
+            try:
+                response = requests.get(link, headers=headers)
+            except Exception as e:
+                print(e)
             print('2 - after response')
             if response.status_code == 429:
                 print('3 - if not work 429')
@@ -121,3 +124,16 @@ def get_high_low(chart_data, is_long):
     low = chart_data[col].min()
     return high, low
 
+def connect(url, headers=None, trials=0, response_error=None):
+    response = None
+    if trials > 3:
+        return response_error
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            time.sleep(2 ** (trials + 1))
+            response = connect(url, headers, trials + 1, response)
+    except:
+        time.sleep(2 ** (trials + 1))
+        response = connect(url, headers, trials + 1, response)
+    return response
