@@ -49,6 +49,7 @@ def get_data(symbol, period):
      return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low
 def process_data(data,interval):
      result = data['chart']['result'][0]
+     print(result)
      meta = result['meta']
      indicators = result['indicators']
      timestamp = result['timestamp']
@@ -56,6 +57,7 @@ def process_data(data,interval):
      currency = meta['currency']
      regular_market_time = meta['regularMarketTime']
      timezone = meta['exchangeTimezoneName']
+     print('before data frame')
      high, low, previous_close = get_high_low_close(meta, numerical_data, interval)
      chart_data = pd.DataFrame({'Date':timestamp,
                    'High':numerical_data['high'],
@@ -64,6 +66,7 @@ def process_data(data,interval):
                    'Low':numerical_data['low'],
                    'Open':numerical_data['open']})
      chart_data['Date'] = chart_data['Date'].apply(pd.Timestamp, unit='s', tz=timezone)
+     print('after applying date')
      return chart_data, currency, regular_market_time, timezone, previous_close, high, low
     
      
