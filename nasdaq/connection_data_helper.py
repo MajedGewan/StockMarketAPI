@@ -15,17 +15,22 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                     }
         raw_data, error = None, None
         for attempt in range(3):  # Retry up to 5 times
+            print('1 - before response')
             response = requests.get(link, headers=headers)
+            print('2 - after response')
             if response.status_code == 429:
+                print('3 - if not work 429')
                 time.sleep(2 ** attempt)
                 continue
             elif response.status_code == 200:
+                print('3 - if work')
                 if response.json()['status']['rCode'] !=200:
                     break
                 raw_data = response.json()
                 print(raw_data)
                 return raw_data, None 
             else:
+                print('3 - if not work')
                 error = response.status_code
                 return None, error
         if raw_data is None:
@@ -38,8 +43,13 @@ def get_data(symbol, period):
     chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
     from_date, to_date = get_from_to_date(period)
     raw_data, error = get_raw_data(symbol, from_date, to_date)
+    print('4 - after raw data')
+    
     if error is None:
+        print('5 - before process')
+        
         chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(raw_data,period)
+        print('6 - after process')
     return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low
 
 def get_from_to_date(period):
