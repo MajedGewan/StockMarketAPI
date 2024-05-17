@@ -46,6 +46,9 @@ def get_data(symbol, period):
      if error is None:
           chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(data, interval)
           print('6 - After process data')
+     if error is not None:
+         print(error)
+         print('therer was an error')
      return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low
 def process_data(data,interval):
      result = data['chart']['result'][0]
