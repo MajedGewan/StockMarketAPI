@@ -22,7 +22,7 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                 raw_data = response.json()
         else:
             error = response.status_code
-            
+
         if raw_data is None and error is None:
             error = "429 unknow request code"
 
@@ -110,6 +110,7 @@ def connect(url, headers=None, trials=0, response_error=None):
     response = None
     if trials > 3:
         return response_error
+    print('in connection')
     try:
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
