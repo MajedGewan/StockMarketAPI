@@ -7,7 +7,6 @@ app = Flask(__name__)
 def index():
     keyword = request.args.get('q')
     return inv_data_handling.search_keyword(keyword)
-app.run()
 
 @app.route('/getdata/<int:id>')
 def getdata(id):
@@ -59,7 +58,6 @@ def getdata(id):
                     status=400, 
                 )
     return get_investing_data(id, url, date_type)
-app.run()
 
 def get_investing_data(id, url, date_type):
     ticker = inv_data_handling.get_data(id, url, date_type)
