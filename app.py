@@ -10,6 +10,7 @@ def index():
 
 @app.route('/getdata/<int:id>')
 def getdata(id):
+    print('hi')
     website = None
     symbol = None
     content = request.json
