@@ -14,23 +14,18 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                         'From': 'youremail@domain.example'  # This is another valid field
                     }
         raw_data, error = None, None
-        for attempt in range(3):  # Retry up to 5 times
-            response = requests.get(link, headers=headers)
-            if response.status_code == 429:
-                time.sleep(2 ** attempt)
-                continue
-            elif response.status_code == 200:
-                if response.json()['status']['rCode'] !=200:
-                    break
+        response = connect(link, headers)
+        if response is None:
+            error = 'error'
+        if response.status_code == 200:
+            if response.json()['status']['rCode'] ==200:
                 raw_data = response.json()
-                print(raw_data)
-                return raw_data, None 
-            else:
-                error = response.status_code
-                return None, error
-        if raw_data is None:
+        else:
+            error = response.status_code
+            
+        if raw_data is None and error is None:
             error = "429 unknow request code"
-            return None, error
+
         return raw_data, error
 
 
@@ -111,3 +106,16 @@ def get_high_low(chart_data, is_long):
     low = chart_data[col].min()
     return high, low
 
+def connect(url, headers=None, trials=0, response_error=None):
+    response = None
+    if trials > 3:
+        return response_error
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            time.sleep(2 ** (trials + 1))
+            response = connect(url, headers, trials + 1, response)
+    except:
+        time.sleep(2 ** (trials + 1))
+        response = connect(url, headers, trials + 1, response)
+    return response
