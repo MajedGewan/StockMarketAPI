@@ -15,29 +15,17 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                     }
         raw_data, error = None, None
         for attempt in range(3):  # Retry up to 5 times
-            print('1 - before responsesss')
-            try:
-                print('1 - before responsesss inside try')
-                print('link')
-                response = requests.get(link, headers=headers)
-                print('after try')
-            except Exception as e:
-                print('Exception')
-                return None, '500'
-            print('2 - after response')
+            response = requests.get(link, headers=headers)
             if response.status_code == 429:
-                print('3 - if not work 429')
                 time.sleep(2 ** attempt)
                 continue
             elif response.status_code == 200:
-                print('3 - if work')
                 if response.json()['status']['rCode'] !=200:
                     break
                 raw_data = response.json()
                 print(raw_data)
                 return raw_data, None 
             else:
-                print('3 - if not work')
                 error = response.status_code
                 return None, error
         if raw_data is None:
@@ -50,13 +38,8 @@ def get_data(symbol, period):
     chart_data, currency, regular_market_time, timezone, previous_close, high, low = None, None, None, None, None, None, None
     from_date, to_date = get_from_to_date(period)
     raw_data, error = get_raw_data(symbol, from_date, to_date)
-    print('4 - after raw data')
-    
     if error is None:
-        print('5 - before process')
-        
         chart_data, currency, regular_market_time, timezone, previous_close, high, low = process_data(raw_data,period)
-        print('6 - after process')
     return error, chart_data, currency, regular_market_time, timezone, previous_close, high, low
 
 def get_from_to_date(period):
@@ -128,16 +111,3 @@ def get_high_low(chart_data, is_long):
     low = chart_data[col].min()
     return high, low
 
-def connect(url, headers=None, trials=0, response_error=None):
-    response = None
-    if trials > 3:
-        return response_error
-    try:
-        response = requests.get(url, headers=headers)
-        if response.status_code != 200:
-            time.sleep(2 ** (trials + 1))
-            response = connect(url, headers, trials + 1, response)
-    except:
-        time.sleep(2 ** (trials + 1))
-        response = connect(url, headers, trials + 1, response)
-    return response
