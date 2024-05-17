@@ -18,6 +18,7 @@ def get_raw_data(symbol, interval, period):
             if response.status_code == 200:
                 print('4 - If works well')
                 raw_data = response.json()
+                print(raw_data)
                 if 'timestamp' not in raw_data['chart']['result']:
                     return raw_data, 404
                     
