@@ -19,7 +19,9 @@ def get_raw_data(symbol, from_date=None, to_date=None):
             try:
                 response = requests.get(link, headers=headers)
             except Exception as e:
+                print('Exception')
                 print(e)
+                return None, '500'
             print('2 - after response')
             if response.status_code == 429:
                 print('3 - if not work 429')
