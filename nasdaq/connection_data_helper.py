@@ -114,9 +114,9 @@ def connect(url, headers=None, trials=0, response_error=None):
     try:
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
-            time.sleep(2 ** (trials + 1))
+            time.sleep(2 * (trials + 1))
             response = connect(url, headers, trials + 1, response)
     except:
-        time.sleep(2 ** (trials + 1))
+        time.sleep(2 * (trials + 1))
         response = connect(url, headers, trials + 1, response)
     return response
