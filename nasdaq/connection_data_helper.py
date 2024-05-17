@@ -15,7 +15,7 @@ def get_raw_data(symbol, from_date=None, to_date=None):
                     }
         raw_data, error = None, None
         for attempt in range(3):  # Retry up to 5 times
-            print('1 - before response')
+            print('1 - before responsesss')
             try:
                 response = requests.get(link, headers=headers)
             except Exception as e:
