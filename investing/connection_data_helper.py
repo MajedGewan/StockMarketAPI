@@ -79,7 +79,9 @@ def connect(url, headers=None, trials=0, response_error=None):
         print('after response inside works well')
 
         if response.status_code != 200:
-            print('after response inside not work well')
+            print('after response inside not work well 200')
+            print(f'response code{response.status_code}')
+            print(f'response reason{response.reason}')
 
             time.sleep(2 ** (trials + 1))
             response = connect(url, headers, trials + 1, response)
