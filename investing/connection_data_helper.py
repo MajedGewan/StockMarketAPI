@@ -37,7 +37,8 @@ def get_raw_data(id, period):
     'Accept':'application/json, text/plain, */*',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
     'Access-Control-Allow-Credentials': 'true',  # This is another valid field
-    'Access-Control-Allow-Origin':'https://www.investing.com'
+    'Access-Control-Allow-Origin':'https://www.investing.com',
+    'Referer':'https://www.investing.com/'
     }
     link = f'https://api.investing.com/api/financialdata/{id}/historical/chart/?interval={i}&period={p}&pointscount=160'
     print(link)
