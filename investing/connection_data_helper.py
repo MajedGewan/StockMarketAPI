@@ -35,7 +35,7 @@ def get_raw_data(id, period):
     data, error = None, None
     headers = {
     'Accept':'application/json, text/plain, */*',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
     'Access-Control-Allow-Credentials': 'true',  # This is another valid field
     'Access-Control-Allow-Origin':'https://www.investing.com'
     }
