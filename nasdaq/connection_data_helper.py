@@ -110,7 +110,6 @@ def connect(url, headers=None, trials=0, response_error=None):
     response = None
     if trials > 3:
         return response_error
-    print('in connection')
     try:
         response = requests.get(url, headers=headers)
         if response.status_code != 200:

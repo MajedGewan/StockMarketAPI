@@ -41,9 +41,7 @@ def get_raw_data(id, period):
     'Referer':'https://www.investing.com/'
     }
     link = f'https://api.investing.com/api/financialdata/{id}/historical/chart/?interval={i}&period={p}&pointscount=160'
-    print(link)
     response = connect(link, headers)
-    print('after print')
     if response is None:
         error = 'error'
         return data, error
@@ -75,19 +73,12 @@ def connect(url, headers=None, trials=0, response_error=None):
     if trials > 3:
         return response_error
     try:
-        print('before response inside')
         response = requests.get(url, headers=headers)
-        print('after response inside works well')
 
         if response.status_code != 200:
-            print('after response inside not work well 200')
-            print(f'response code{response.status_code}')
-            print(f'response reason{response.reason}')
-
             time.sleep(2 ** (trials + 1))
             response = connect(url, headers, trials + 1, response)
     except:
-        print('after response inside not work well')
 
         time.sleep(2 ** (trials + 1))
         response = connect(url, headers, trials + 1, response)
