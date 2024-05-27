@@ -40,7 +40,7 @@ def getdata(id):
                 )
             finance =  yah_data_handling.get_data(symbol, date_type)
             if finance.error is not None:
-                return get_investing_data(id, url, date_type)
+                return get_investing_data(id, symbol, url, date_type)
             return finance.to_json()
         elif website == 'Nasdaq':
             if symbol is None:
@@ -50,17 +50,17 @@ def getdata(id):
                 )
             finance =  nas_data_handling.get_data(symbol, date_type)
             if finance.error is not None:
-                return get_investing_data(id, url, date_type)
+                return get_investing_data(id, symbol, url, date_type)
             return finance.to_json()
         else:
             return Response(
                     "Website can be only; Investing, Yahoo Finance or Nasdaq",
                     status=400, 
                 )
-    return get_investing_data(id, url, date_type)
+    return get_investing_data(id, symbol, url, date_type)
 
-def get_investing_data(id, url, date_type):
-    ticker = inv_data_handling.get_data(id, url, date_type)
+def get_investing_data(id, symbol, url, date_type):
+    ticker = inv_data_handling.get_data(id, symbol, url, date_type)
     if ticker.error is not None:
         if ticker.error == 403:
             return Response(
@@ -72,4 +72,3 @@ def get_investing_data(id, url, date_type):
             status=ticker.error
         )
     return ticker.to_json()
-
