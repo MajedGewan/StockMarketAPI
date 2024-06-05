@@ -37,6 +37,7 @@ class Ticker:
         
         data = json.loads(self.data.to_json())
         returned_json = {'Data':data, 'meta':{'Period': self.period,
+                                              'Symbol':self.symbol,
                                             'Currency': self.currency,
                                             'RegularMarketTime': self.regular_market_time,
                                             'Timezone': self.timezone,
